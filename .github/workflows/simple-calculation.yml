@@ -2,7 +2,8 @@ name: Simple Math Calculation
 
 on:
   push:
-    branches: [main]
+    paths:
+      - 'simple-calculation.yml'
   workflow_dispatch:
 
 jobs:
