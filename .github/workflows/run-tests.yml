@@ -1,0 +1,33 @@
+name: Run Python Unit Tests
+
+on:
+  push:
+    branches:
+      - main  # החלף אם אתה רוצה להפעיל את ה-Workflow בסניפים אחרים
+  pull_request:
+    branches:
+      - main  # להפעיל את הבדיקות עבור כל Pull Request לסניף main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # החלף לגרסה המתאימה (למשל '3.10')
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          # אם יש לך קובץ requirements.txt עם תלות נוספות, תוכל להתקין אותן כך:
+          # pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          pytest
