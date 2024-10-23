@@ -1,5 +1,8 @@
 name: Log Committer GitHub Username
 
+permissions:
+  contents: read
+
 on:
   push:
     branches:
@@ -23,10 +26,22 @@ jobs:
               repo: context.repo.repo,
               ref: commitSha,
             });
-            const committerLogin = commitData.author ? commitData.author.login : 'Unknown';
+            let committerLogin = 'Unknown';
+
+            if (commitData.author && commitData.author.login) {
+              committerLogin = commitData.author.login;
+            } else if (commitData.commit && commitData.commit.author && commitData.commit.author.email) {
+              const email = commitData.commit.author.email;
+              const { data: users } = await github.rest.search.users({
+                q: `${email} in:email`,
+              });
+              if (users.total_count > 0) {
+                committerLogin = users.items[0].login;
+              }
+            }
+
             core.setOutput('committer_login', committerLogin);
 
       - name: Log committer username
         run: |
           echo "Committer GitHub Username: ${{ steps.get_committer.outputs.committer_login }}"
-          
