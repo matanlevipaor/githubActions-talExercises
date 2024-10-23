@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run simple calculation
-        run: echo "Result: $((2 + 2))"
+        run: 'echo "Result: $((2 + 2))"'
