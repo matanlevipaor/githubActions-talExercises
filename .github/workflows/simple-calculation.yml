@@ -1,0 +1,13 @@
+name: Simple Math Calculation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  calculate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run simple calculation
+        run: echo "Result: $((2 + 2))"
