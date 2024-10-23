@@ -29,3 +29,4 @@ jobs:
       - name: Log committer username
         run: |
           echo "Committer GitHub Username: ${{ steps.get_committer.outputs.committer_login }}"
+          
