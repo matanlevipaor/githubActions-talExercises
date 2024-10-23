@@ -1,0 +1,12 @@
+name: Scheduled Hello
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+
+jobs:
+  say_hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hello
+        run: echo "Hello action number 2!"
