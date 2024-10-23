@@ -3,7 +3,7 @@ name: Simple Math Calculation
 on:
   push:
     paths:
-      - 'simple-calculation.yml'
+      - 'triger-simple-calc.txt'
   workflow_dispatch:
 
 jobs:
