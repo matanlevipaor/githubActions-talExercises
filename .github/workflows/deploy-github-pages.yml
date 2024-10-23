@@ -34,3 +34,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
+      - name: Clear npm cache
+        run: npm cache clean --force
+      - name: List project files
+        run: ls -al
+      
+        
