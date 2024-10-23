@@ -1,0 +1,31 @@
+name: Log Committer GitHub Username
+
+on:
+  push:
+    branches:
+      - main  # החלף ל-sניף הרלוונטי שלך אם הוא שונה מ-main
+
+jobs:
+  log_committer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get Committer GitHub Username
+        uses: actions/github-script@v6
+        id: get_committer
+        with:
+          script: |
+            const commitSha = context.sha;
+            const { data: commitData } = await github.rest.repos.getCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: commitSha,
+            });
+            const committerLogin = commitData.author ? commitData.author.login : 'Unknown';
+            core.setOutput('committer_login', committerLogin);
+
+      - name: Log committer username
+        run: |
+          echo "Committer GitHub Username: ${{ steps.get_committer.outputs.committer_login }}"
