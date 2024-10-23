@@ -1,14 +1,21 @@
-name: Scheduled Hello
+name: Scheduled Hello at 9 AM Israel Time
 
 on:
     schedule:
-      - cron: '0 9 * * *'
+      - cron: '0 6 * * *'
+      - cron: '0 7 * * *'
     workflow_dispatch:
   
-
 jobs:
   say_hello:
     runs-on: ubuntu-latest
     steps:
-      - name: Say Hello
-        run: echo "Hello from action number 2!"
+      - name: Check if it's 9 AM in Israel
+        run: |
+          current_hour=$(TZ="Asia/Jerusalem" date +'%H')
+          if [ "$current_hour" -eq 9 ]; then
+            echo "Hello!"
+          else
+            echo "Not 9 AM in Israel, skipping."
+            exit 0
+          fi
