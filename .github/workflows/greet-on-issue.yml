@@ -10,8 +10,9 @@ jobs:
 
     steps:
       - name: Post Welcome Comment
-        uses: actions-ecosystem/action-add-comment@v1
+        uses: peter-evans/create-or-update-comment@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          issue_number: ${{ github.event.issue.number }}
-          comment_body: "Thank you for opening this issue! We appreciate your feedback. 😊"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Thank you for opening this issue! We appreciate your feedback. 😊
