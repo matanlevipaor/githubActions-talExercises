@@ -24,3 +24,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           publish_branch: gh-pages  # מגדיר את הסניף לפריסה.
+      
+      - name: Upload Pages Artifact
+        uses: actions/upload-artifact@v3
+        with:
+            name: my-unique-pages-artifact  # ודא שהשם ייחודי כדי למנוע התנגשויות
+            path: ./out
+        
