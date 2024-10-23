@@ -8,5 +8,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Print Action 1
-        run: echo "Hello, this action is GOOD!"
+        run: echo "Hello, action 1 is GOOD!"
 
