@@ -7,6 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Print Hello World
+      - name: Print Action 1
         run: echo "Hello, this action is GOOD!"
 
