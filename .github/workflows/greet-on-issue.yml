@@ -1,0 +1,17 @@
+name: Greet New Issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Post Welcome Comment
+        uses: actions-ecosystem/action-add-comment@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          issue_number: ${{ github.event.issue.number }}
+          comment_body: "Thank you for opening this issue! We appreciate your feedback. 😊"
