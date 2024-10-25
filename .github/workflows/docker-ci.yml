@@ -43,10 +43,14 @@ jobs:
             exit 1
           fi
 
-      - name: Add Comment on PR
+      - name: Add Comment on PR - Success
         if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr comment ${{ github.event.pull_request.number }} --body "Test successfully done"
 
-      - name: Add Failure Comment on PR
+      - name: Add Comment on PR - Failure
         if: failure()
-        run: gh pr comment ${{ github.event.pull_request.number }} --body "Test failed" 
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr comment ${{ github.event.pull_request.number }} --body "Test failed"
