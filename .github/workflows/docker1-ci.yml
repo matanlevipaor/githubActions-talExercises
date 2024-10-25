@@ -33,9 +33,6 @@ jobs:
           docker run -d -p 5000:5000 $DOCKER_USERNAME/my-flask-app
           sleep 10
 
-      - name: Check Docker container logs
-        run: docker logs $(docker ps -q -f ancestor=$DOCKER_USERNAME/my-flask-app)
-   
       - name: Test Application
         id: test
         run: |
@@ -68,14 +65,3 @@ jobs:
           fi
 
 
-      - name: Add Comment on PR - Success
-        if: success()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr comment ${{ github.event.pull_request.number }} --body "Test successfully done"
-
-      - name: Add Comment on PR - Failure
-        if: failure()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr comment ${{ github.event.pull_request.number }} --body "Test failed"
