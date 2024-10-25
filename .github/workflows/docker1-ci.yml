@@ -36,8 +36,11 @@ jobs:
       - name: Test Application
         id: test
         run: |
+          # הגדרת מספר ניסיונות
           max_retries=5
           attempt=1
+          
+          # לולאה לבדיקת חיבור
           while [ $attempt -le $max_retries ]; do
             response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/student?name=YourName)
             if [[ "$response" == "200" ]]; then
@@ -49,12 +52,13 @@ jobs:
             sleep 5
           done
 
+          # בדיקה אם החיבור הצליח לאחר כל הניסיונות
           if [ $attempt -gt $max_retries ]; then
             echo "Server failed to respond after $max_retries attempts."
             exit 1
           fi
 
-          # Running the actual test
+          # בדיקת התגובה
           response=$(curl -s http://localhost:5000/api/student?name=YourName)
           echo "Response: $response"
           if [[ "$response" == *"Hello, YourName!"* ]]; then
@@ -63,5 +67,6 @@ jobs:
             echo "Test failed"
             exit 1
           fi
+
 
 
