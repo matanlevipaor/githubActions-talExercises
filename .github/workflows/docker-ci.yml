@@ -1,0 +1,52 @@
+name: CI for Flask App
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t my-flask-app .
+
+      - name: Login to DockerHub
+        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
+      - name: Push Docker image to DockerHub
+        run: docker push my-flask-app
+
+      - name: Run Docker container
+        run: |
+          docker run -d -p 5000:5000 my-flask-app
+          sleep 5
+
+      - name: Test Application
+        id: test
+        run: |
+          response=$(curl -s http://localhost:5000/api/student?name=YourName)
+          echo "Response: $response"
+          if [[ "$response" == *"Hello, YourName!"* ]]; then
+            echo "success"
+          else
+            echo "failure"
+            exit 1
+          fi
+
+      - name: Add Comment on PR
+        if: success()
+        run: gh pr comment ${{ github.event.pull_request.number }} --body "Test successfully done"
+
+      - name: Add Failure Comment on PR
+        if: failure()
+        run: gh pr comment ${{ github.event.pull_request.number }} --body "Test failed" 
