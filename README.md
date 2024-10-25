@@ -19,7 +19,7 @@ Task: Set up a GitHub Action that logs the GitHub username of the person who mad
 6. Automated Code Linting
 Task: Set up a GitHub Action to automatically run a linter for python
 
-7. Running Unit Tests on Push
+7. Running Unit Tests on Push 
 Task: Configure a GitHub Action to run unit tests using a testing framework (use pytest for python)
 
 8. Building and Testing a Docker Image
