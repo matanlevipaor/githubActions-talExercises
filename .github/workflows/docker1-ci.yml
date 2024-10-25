@@ -35,6 +35,7 @@ jobs:
 
       - name: Test Application
         id: test
+        shell: bash
         run: |
           max_retries=5
           attempt=1
@@ -55,6 +56,7 @@ jobs:
             exit 1
           fi
 
+          # Check the response content
           response=$(curl -s http://localhost:5000/api/student?name=YourName)
           echo "Response: $response"
           if [[ "$response" == *"Hello, YourName!"* ]]; then
@@ -63,6 +65,7 @@ jobs:
             echo "Test failed"
             exit 1
           fi
+
 
 
 
