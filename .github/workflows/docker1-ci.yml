@@ -31,19 +31,42 @@ jobs:
       - name: Run Docker container
         run: |
           docker run -d -p 5000:5000 $DOCKER_USERNAME/my-flask-app
-          sleep 5
+          sleep 10
 
+      - name: Check Docker container logs
+        run: docker logs $(docker ps -q -f ancestor=$DOCKER_USERNAME/my-flask-app)
+   
       - name: Test Application
         id: test
         run: |
+          max_retries=5
+          attempt=1
+          while [ $attempt -le $max_retries ]; do
+            response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/student?name=YourName)
+            if [[ "$response" == "200" ]]; then
+              echo "Server is up and responding with status 200"
+              break
+            fi
+            echo "Server not up yet. Retry $attempt/$max_retries."
+            attempt=$((attempt+1))
+            sleep 5
+          done
+
+          if [ $attempt -gt $max_retries ]; then
+            echo "Server failed to respond after $max_retries attempts."
+            exit 1
+          fi
+
+          # Running the actual test
           response=$(curl -s http://localhost:5000/api/student?name=YourName)
           echo "Response: $response"
           if [[ "$response" == *"Hello, YourName!"* ]]; then
-            echo "success"
+            echo "Test succeeded"
           else
-            echo "failure"
+            echo "Test failed"
             exit 1
           fi
+
 
       - name: Add Comment on PR - Success
         if: success()
